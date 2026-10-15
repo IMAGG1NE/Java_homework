@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String args[]){
         Scanner scanner = new Scanner(System.in);
+        Matrix last_result = null;
         System.out.println("Здравствуйте, вас приветсвует MatrixMaster выберите опцию:");
 
         while(true){
@@ -23,57 +24,145 @@ public class Main {
             }
             switch (choice){
                 case 1->{
-                    System.out.println("Вы выбрали сложить матрицы");
-                    System.out.println("введите размерности матрицы(N X M)");
-                    int n = scanner.nextInt();
-                    int m = scanner.nextInt();
+                    System.out.println("Вы выбрали сложение матриц");
 
-                    Matrix copmlex_matrix_1 = new Matrix(n, m);
+                    Matrix complex_matrix_1;
+
+                    if(last_result != null){
+                        System.out.println("1) ввести новую матрицу\n2) использовать последний результат");
+                        int ch = scanner.nextInt();
+
+                        if(ch == 2){
+                            complex_matrix_1 = last_result;
+                        }
+                        else if(ch == 1){
+                            System.out.println("введите размерности матрицы(N X M)");
+                            int n = scanner.nextInt();
+                            int m = scanner.nextInt();
+
+                            complex_matrix_1 = new Matrix(n, m);
+                            System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
+                            complex_matrix_1.assign_matrix(scanner);
+                        }
+                        else{
+                            System.out.println("Неизвестный вариант");
+                            break;
+                        }
+                    }
+                    else{
+                        System.out.println("введите размерности матрицы(N X M)");
+                        int n = scanner.nextInt();
+                        int m = scanner.nextInt();
+
+                        complex_matrix_1 = new Matrix(n, m);
+                        System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
+                        complex_matrix_1.assign_matrix(scanner);
+                    }
+
+                    System.out.println("введите размерности второй матрицы(N X M)");
+                    int n2 = scanner.nextInt();
+                    int m2 = scanner.nextInt();
+
+                    Matrix complex_matrix_2 = new Matrix(n2, m2);
                     System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
-                    copmlex_matrix_1.assign_matrix(scanner);
+                    complex_matrix_2.assign_matrix(scanner);
 
-                    Matrix copmlex_matrix_2 = new Matrix(n, m);
-                    System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
-                    copmlex_matrix_2.assign_matrix(scanner);
-
-                    Matrix result_matrix = copmlex_matrix_1.add(copmlex_matrix_2);
-                    result_matrix.print_matrix();
+                    try{
+                        Matrix result_matrix = complex_matrix_1.add(complex_matrix_2);
+                        last_result = result_matrix;
+                        last_result.print_matrix();
+                    }
+                    catch(IllegalArgumentException e){
+                        System.out.println(e.getMessage());
+                    }
                 }
                 case 2 ->{
                     System.out.println("Вы выбрали умножить матрицы");
-                    boolean flag = false;
-                    do {
+
+                    Matrix complex_matrix_1;
+
+                    if(last_result != null){
+                        System.out.println("1) ввести новую матрицу\n2) использовать последний результат");
+                        int ch = scanner.nextInt();
+
+                        if(ch == 2){
+                            complex_matrix_1 = last_result;
+                        }
+                        else if(ch == 1){
+                            System.out.println("введите размерности матрицы(N X M)");
+                            int n1 = scanner.nextInt();
+                            int m1 = scanner.nextInt();
+
+                            complex_matrix_1 = new Matrix(n1, m1);
+                            System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
+                            complex_matrix_1.assign_matrix(scanner);
+                        }
+                        else{
+                            System.out.println("Неизвестный вариант");
+                            break;
+                        }
+                    }
+                    else{
                         System.out.println("введите размерности матрицы(N X M)");
                         int n1 = scanner.nextInt();
                         int m1 = scanner.nextInt();
 
-                        System.out.println("введите размерности матрицы(N X M)");
-                        int n2 = scanner.nextInt();
-                        int m2 = scanner.nextInt();
-                        if(m1 != n2){
-                            System.out.println("Размерности матриц не удовлетворяют условиям умножения матриц, попробуйте еще раз");
-                            continue;
-                        }
-                        Matrix copmlex_matrix_1 = new Matrix(n1, m1);
+                        complex_matrix_1 = new Matrix(n1, m1);
                         System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
-                        copmlex_matrix_1.assign_matrix(scanner);
+                        complex_matrix_1.assign_matrix(scanner);
+                    }
 
-                        Matrix copmlex_matrix_2 = new Matrix(n2, m2);
-                        System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
-                        copmlex_matrix_2.assign_matrix(scanner);
-                        Matrix res_matrix = copmlex_matrix_1.mult(copmlex_matrix_2);
-                        res_matrix.print_matrix();
-                        flag =true;
-                    }while(!flag);
+                    System.out.println("введите размерности второй матрицы(N X M)");
+                    int n2 = scanner.nextInt();
+                    int m2 = scanner.nextInt();
 
+                    Matrix complex_matrix_2 = new Matrix(n2, m2);
+                    System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
+                    complex_matrix_2.assign_matrix(scanner);
 
+                    try{
+                        Matrix res_matrix = complex_matrix_1.mult(complex_matrix_2);
+                        last_result = res_matrix;
+                        last_result.print_matrix();
+                    }
+                    catch(IllegalArgumentException e){
+                        System.out.println(e.getMessage());
+                    }
                 }
                 case 3 ->{
                     System.out.println("Вы выбрали делить матрицы A/B");
-                    System.out.println("Введите размерности Матрицы A");
-                    int n1 = scanner.nextInt();
-                    int m1 = scanner.nextInt();
 
+                    Matrix complex_matrix_1;
+
+                    if(last_result != null){
+                        System.out.println("1) ввести новую матрицу\n2) использовать последний результат");
+                        int ch = scanner.nextInt();
+                        if(ch == 2){
+                            complex_matrix_1 = last_result;
+                        }
+                        else if(ch == 1){
+                            System.out.println("Введите размерности Матрицы A");
+                            int n1 = scanner.nextInt();
+                            int m1 = scanner.nextInt();
+
+                            complex_matrix_1 = new Matrix(n1, m1);
+                            System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
+                            complex_matrix_1.assign_matrix(scanner);
+                        }
+                        else{
+                            System.out.println("Неизвестный вариант");
+                            break;
+                        }
+                    }
+                    else{
+                        System.out.println("Введите размерности Матрицы A");
+                        int n1 = scanner.nextInt();
+                        int m1 = scanner.nextInt();
+
+                        complex_matrix_1 = new Matrix(n1, m1);
+                        System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
+                        complex_matrix_1.assign_matrix(scanner);
+                    }
                     System.out.println("Введите размерность матрицы B");
                     int n2 = scanner.nextInt();
                     int m2 = scanner.nextInt();
@@ -81,48 +170,100 @@ public class Main {
                         System.out.println("Размерности матрицы B должны совпадать друг с другом");
                         break;
                     }
-                    if(m1 != n2){
-                        System.out.println("количество столбцов A должно совпадать с количеством строк B");
-                        break;
-                    }
-                    System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
-                    Matrix complex_matrix_1 = new Matrix(n1, m1);
-                    complex_matrix_1.assign_matrix(scanner);
 
-                    System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
                     Matrix complex_matrix_2 = new Matrix(n2, m2);
+                    System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
                     complex_matrix_2.assign_matrix(scanner);
-                    if(complex_matrix_2.det().abs() < 1e-6){
-                        System.out.println("Определитель матрицы B = 0, Деление на вырожденную матрицу невозможно");
-                        break;
+
+                    try{
+                        Matrix complex_matrix_2_inverse = complex_matrix_2.inverse();
+                        Matrix complex_matrix_res = complex_matrix_1.mult(complex_matrix_2_inverse);
+
+                        last_result = complex_matrix_res;
+                        last_result.print_matrix();
                     }
-                    Matrix complex_matrix_2_inverse = complex_matrix_2.inverse();
-                    Matrix complex_matrix_res =complex_matrix_1.mult(complex_matrix_2_inverse);
-                    complex_matrix_res.print_matrix();
+                    catch(IllegalArgumentException | ArithmeticException e){
+                        System.out.println(e.getMessage());
+                    }
                 }
                 case 4 ->{
                     System.out.println("Вы выбрали транспонировать матрицу");
-                    System.out.println("введите размерности матрицы(N X M)");
-                    int n = scanner.nextInt();
-                    int m = scanner.nextInt();
+                    Matrix complex_matrix;
+                    if(last_result != null){
+                        System.out.println("1) ввести новую матрицу\n2) использовать последний результат");
+                        int ch = scanner.nextInt();
 
-                    Matrix complex_matrix = new Matrix(n, m);
-                    System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
-                    complex_matrix.assign_matrix(scanner);
+                        if(ch == 2){
+                            complex_matrix = last_result;
+                        }
+                        else if(ch == 1){
+                            System.out.println("введите размерности матрицы(N X M)");
+                            int n = scanner.nextInt();
+                            int m = scanner.nextInt();
+
+                            complex_matrix = new Matrix(n, m);
+                            System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
+                            complex_matrix.assign_matrix(scanner);
+                        }
+                        else{
+                            System.out.println("Неизвестный вариант");
+                            break;
+                        }
+                    }
+                    else{
+                        System.out.println("введите размерности матрицы(N X M)");
+                        int n = scanner.nextInt();
+                        int m = scanner.nextInt();
+
+                        complex_matrix = new Matrix(n, m);
+                        System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
+                        complex_matrix.assign_matrix(scanner);
+                    }
 
                     System.out.println("Транспонированная матрица:");
                     Matrix transposed_matrix = complex_matrix.transpose_matrix();
-                    transposed_matrix.print_matrix();
+
+                    last_result = transposed_matrix;
+                    last_result.print_matrix();
                 }
                 case 5 ->{
                     System.out.println("Вы выбрали вычислить определитель");
-                    System.out.println("Введите размерность матрицы(одно число)");
-                    int n = scanner.nextInt();
-                    Matrix complex_matrix = new Matrix(n, n);
-                    System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
-                    complex_matrix.assign_matrix(scanner);
-                    System.out.println("Определитель матрицы = " + complex_matrix.det());
+                    Matrix complex_matrix;
+                    if(last_result != null){
+                        System.out.println("1) ввести новую матрицу\n2) использовать последний результат");
+                        int ch = scanner.nextInt();
 
+                        if(ch == 2){
+                            complex_matrix = last_result;
+                        }
+                        else if(ch == 1){
+                            System.out.println("Введите размерность матрицы(одно число)");
+                            int n = scanner.nextInt();
+                            complex_matrix = new Matrix(n, n);
+                            System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
+                            complex_matrix.assign_matrix(scanner);
+                        }
+                        else{
+                            System.out.println("Неизвестный вариант");
+                            break;
+                        }
+                    }
+                    else{
+                        System.out.println("Введите размерность матрицы(одно число)");
+                        int n = scanner.nextInt();
+                        complex_matrix = new Matrix(n, n);
+                        System.out.println("Заполните матрицу (формат ввода без пробелов, например: 7+10i, -3.5i, 5):");
+                        complex_matrix.assign_matrix(scanner);
+                    }
+                    try{
+                        System.out.println("Определитель матрицы = " + complex_matrix.det());
+                    }
+                    catch(IllegalArgumentException e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+                default -> {
+                    System.out.println("Неизвестный пункт\nВыберите опцию: 1) Сложить матрицы\n2) умножить матрицы\n3) разделить матрицы\n4) транспонировать матрицу\n5) вычислить определитель\n0) выйти из программы");
                 }
             }
         }
@@ -249,6 +390,9 @@ class Matrix{
         return transposed_matrix;
     }
     Matrix add(Matrix another_matrix){
+        if(n != another_matrix.n || m != another_matrix.m){
+            throw new IllegalArgumentException("Размерности матриц для сложения должны совпадать");
+        }
         Matrix res_matrix = new Matrix(n, m);
         for(int i = 0; i < n; i++){
             for(int j = 0; j < m; j++){
@@ -259,7 +403,7 @@ class Matrix{
     }
     Matrix mult(Matrix another_matrix){
         if(m != another_matrix.n){
-            return new Matrix(0, 0);
+           throw new IllegalArgumentException("Количество столбцов первой матрицы должно совпадать с количеством строк второй матрицы");
         }
         Matrix res = new Matrix(n, another_matrix.m);
         for(int i = 0; i < n; i++){
@@ -276,6 +420,9 @@ class Matrix{
         return res;
     }
     Complex det(){
+        if(n != m){
+            throw new IllegalArgumentException("Определитель можно вычислить только для квадратной матрицы");
+        }
         Complex determ = new Complex(1, 0);
         double eps = 1e-6;
         Matrix matrix_copy = new Matrix(n, m);
@@ -330,7 +477,15 @@ class Matrix{
         return res_minor;
     }
     public Matrix inverse(){
+        if(n != m){
+            throw new IllegalArgumentException("Обратная матрица существует только для квадратной матрицы");
+        }
         Complex det = this.det();
+
+        if(det.abs() < 1e-6){
+            throw new ArithmeticException("Обратной матрицы не существует: определитель равен нулю");
+        }
+
         if(n == 1){
             Matrix res = new Matrix(1, 1);
             res.matrix[0][0] = new Complex(1, 0).div_by(det);
